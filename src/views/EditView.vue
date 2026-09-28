@@ -523,7 +523,11 @@ async function save() {
   .date-input,
   .chip input { font-size: 16px; }
   .pick-row select { padding: 12px 11px; }
-  .chip { padding: 10px 15px; }
+  .chip input { width: 26px; margin: -2px 0; }
+
+  /* 提前提醒胶囊：单行横滑不换行，紧凑一致 */
+  .chips2 { flex-wrap: nowrap; overflow-x: auto; gap: 7px; padding-bottom: 3px; }
+  .chip { padding: 8px 12px; font-size: 12.5px; flex-shrink: 0; white-space: nowrap; }
 
   .edit-acts { flex-direction: column-reverse; }
   .edit-acts .btn { width: 100%; }
