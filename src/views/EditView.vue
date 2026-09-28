@@ -117,15 +117,14 @@ function toggleOffset(o) {
     : normalizeOffsets([...offsets.value, o])
 }
 
-const customOn = computed(
-  () => customText.value.trim() !== '' || offsets.value.some((o) => !FIXED_OFFSETS.includes(o))
-)
+const customOn = computed(() => offsets.value.some((o) => !FIXED_OFFSETS.includes(o)))
 
-// 自定义输入非空即生效：替换掉旧的自定义值
+// 自定义输入合法（0-365 整数，与后端校验一致）才生效；非法值不点亮胶囊。
+// 输入为空或清空时，替换掉旧的自定义值。
 watch(customText, (text) => {
   const fixed = offsets.value.filter((o) => FIXED_OFFSETS.includes(o))
   const n = Number(text.trim())
-  if (text.trim() !== '' && Number.isInteger(n) && n >= 0) fixed.push(n)
+  if (text.trim() !== '' && Number.isInteger(n) && n >= 0 && n <= 365) fixed.push(n)
   offsets.value = normalizeOffsets(fixed)
 })
 
