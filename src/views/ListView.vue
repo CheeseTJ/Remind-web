@@ -27,7 +27,6 @@ let confirmTimer = null
 
 const total = computed(() => memos.value.length)
 const activeCount = computed(() => memos.value.filter((m) => m.enabled).length)
-const userInitial = computed(() => (userEmail.value[0] || '?').toUpperCase())
 
 function showToast(text) {
   toast.value = text
@@ -127,15 +126,16 @@ function nextInfo(memo) {
           <small>农历阳历 · 都帮你记着</small>
         </div>
       </div>
-      <div class="top-right">
-        <div class="send-tag">每天 <b class="disp">{{ sendTime }}</b>（北京时间）统一发送</div>
-        <div class="me">
-          <template v-if="userEmail">
-            <span class="face">{{ userInitial }}</span>
-            <span class="mail">{{ userEmail }}</span>
-          </template>
-          <button type="button" @click="onLogout">退出</button>
-        </div>
+      <div class="me">
+        <template v-if="userEmail">
+          <span class="avatar" title="当前账号">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+              <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-3.9 0-8 2-8 5.3V21a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-1.7c0-3.3-4.1-5.3-8-5.3z"/>
+            </svg>
+          </span>
+          <span class="mail">{{ userEmail }}</span>
+        </template>
+        <button class="logout" type="button" @click="onLogout">退出</button>
       </div>
     </header>
 
@@ -145,6 +145,7 @@ function nextInfo(memo) {
           <h2 class="disp"><span class="mini">记</span>我的备忘</h2>
           <div class="count">共 {{ total }} 条 · {{ activeCount }} 条提醒中</div>
         </div>
+        <div class="send-tag">每天 <b class="disp">{{ sendTime }}</b>（北京时间）统一发送</div>
       </div>
 
       <div v-if="loading" class="state-tip">正在翻看手账…</div>
@@ -223,7 +224,11 @@ function nextInfo(memo) {
     </main>
 
     <!-- 悬浮新建按钮 -->
-    <button class="fab disp" type="button" title="记一笔" @click="router.push('/memo/new')">＋</button>
+    <button class="fab" type="button" title="记一笔" @click="router.push('/memo/new')">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+        <path d="M12 5v14M5 12h14"/>
+      </svg>
+    </button>
 
     <transition name="toast">
       <div v-if="toast" class="toast">{{ toast }}</div>
@@ -232,17 +237,11 @@ function nextInfo(memo) {
 </template>
 
 <style scoped>
-.top-right {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
 .send-tag {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  align-self: center;
   background: #fff;
   border: 2px dashed #e3d5bb;
   border-radius: 999px;
@@ -259,25 +258,25 @@ function nextInfo(memo) {
 .me {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
   font-size: 12.5px;
   color: var(--ink-soft);
 }
 
-.me .face {
-  width: 32px;
-  height: 32px;
+.me .avatar {
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  background: var(--rose);
+  background: var(--sage);
   color: #fff;
   display: grid;
   place-items: center;
-  font-family: "ZCOOL KuaiLe", "Yuanti SC", "YouYuan", sans-serif;
+  flex-shrink: 0;
 }
 
 .me .mail { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-.me button {
+.me .logout {
   background: none;
   border: none;
   color: var(--ink-soft);
@@ -288,7 +287,7 @@ function nextInfo(memo) {
   font-family: inherit;
 }
 
-.me button:hover { color: var(--rose); }
+.me .logout:hover { color: var(--rose); }
 
 /* ===== 列表头 ===== */
 .list-head {
@@ -349,7 +348,7 @@ function nextInfo(memo) {
 }
 
 .fab:hover {
-  transform: translateY(-2px) rotate(90deg);
+  transform: translateY(-2px);
   box-shadow: 0 14px 28px -8px rgba(229, 143, 156, .85);
 }
 
@@ -633,16 +632,16 @@ function nextInfo(memo) {
 .toast-leave-to { opacity: 0; transform: translateX(-50%) translateY(8px); }
 
 @media (max-width: 640px) {
-  .top-right { gap: 8px; }
-  .send-tag { padding: 7px 13px; font-size: 11.5px; justify-content: center; }
+  .send-tag { padding: 7px 13px; font-size: 11.5px; align-self: flex-start; margin-top: 2px; }
   .send-tag b { font-size: 13px; }
-  .me .mail { max-width: 110px; }
+  .me { gap: 6px; }
+  .me .mail { max-width: 96px; }
 
   .list-head { margin: 12px 0 14px; }
   .list-head h2 { font-size: 22px; }
 
-  /* 手机端卡片每行两个 */
-  .cards { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  /* 手机端卡片每行两个；行距加大给和纸胶带留出空间 */
+  .cards { grid-template-columns: repeat(2, 1fr); gap: 18px 10px; }
   .memo { padding: 14px 12px 10px; }
   .memo h3 { font-size: 15px; }
   .memo .note { font-size: 11px; }
