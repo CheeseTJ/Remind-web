@@ -1,0 +1,16 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "remind-web",
+	"account_id": "1b53bebb48213cfdf6e43cd71d931741",
+	"compatibility_date": "2026-05-29",
+	// 纯静态 Worker：直接托管 dist 构建产物，SPA 路由回退到 index.html
+	"assets": {
+		"directory": "dist",
+		"not_found_handling": "single-page-application"
+	},
+	// 绑定到 taojun.top 子域（wrangler 会自动建 DNS 与证书）
+	"workers_dev": false,
+	"routes": [
+		{ "pattern": "remind.taojun.top", "custom_domain": true }
+	]
+}

@@ -1,0 +1,31 @@
+name: Deploy
+
+# push 到 master 自动构建并发布到 Cloudflare Worker（remind.taojun.top）。
+# wrangler 使用本机已登录的 OAuth 凭据（与 Ucenter/music 部署同一方式）。
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'src/**'
+      - 'index.html'
+      - 'vite.config.js'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.env.production'
+      - 'wrangler.jsonc'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          clean: false # 保留 node_modules 加速构建
+
+      - name: Build + Deploy（remind.taojun.top）
+        run: |
+          export PATH=/usr/local/bin:$PATH
+          npm ci --no-audit --no-fund
+          npm run deploy
