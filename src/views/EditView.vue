@@ -520,14 +520,13 @@ async function save() {
 
   /* 16px 防 iOS 聚焦缩放 */
   .pick-row select,
-  .date-input,
-  .chip input { font-size: 16px; }
+  .date-input { font-size: 16px; }
   .pick-row select { padding: 12px 11px; }
-  .chip input { width: 26px; margin: -2px 0; }
 
-  /* 提前提醒胶囊：单行横滑不换行，紧凑一致 */
-  .chips2 { flex-wrap: nowrap; overflow-x: auto; gap: 7px; padding-bottom: 3px; }
-  .chip { padding: 8px 12px; font-size: 12.5px; flex-shrink: 0; white-space: nowrap; }
+  /* 提前提醒胶囊：保持换行，统一高度紧凑一致（自定义输入框 16px 但不撑高） */
+  .chips2 { gap: 7px; }
+  .chip { height: 34px; padding: 0 12px; font-size: 12.5px; }
+  .chip input { width: 26px; height: auto; padding: 0; font-size: 16px; }
 
   .edit-acts { flex-direction: column-reverse; }
   .edit-acts .btn { width: 100%; }
