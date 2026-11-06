@@ -34,6 +34,8 @@ jobs:
         env:
           # 走 API Token 而非本机 OAuth，凭据来源显式且可复现
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          # 账号 ID 不再写进 wrangler.jsonc（仓库公开），由 secret 注入
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           export PATH=/usr/local/bin:$PATH
           npm ci --no-audit --no-fund

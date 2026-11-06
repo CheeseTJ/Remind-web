@@ -1,7 +1,8 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "remind-web",
-	"account_id": "1b53bebb48213cfdf6e43cd71d931741",
+	// 账号 ID 不写进仓库（仓库是公开的），部署时由 CLOUDFLARE_ACCOUNT_ID 环境变量提供
+	"account_id": "<your-cloudflare-account-id>",
 	"compatibility_date": "2026-05-29",
 	// 纯静态 Worker：直接托管 dist 构建产物，SPA 路由回退到 index.html
 	"assets": {
